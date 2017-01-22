@@ -7,5 +7,5 @@ Homestead.json
 Homestead.yaml
 .env
 
-*.http.config
+*.http.conf
 *~
