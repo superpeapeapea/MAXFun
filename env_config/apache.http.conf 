@@ -1,0 +1,12 @@
+<VirtualHost *:80>                                     
+  ServerName local.maxfun.com
+  ServerAlias *local.maxfun.com
+  DocumentRoot /maxfun/MAXFun/public/
+  <Directory /maxfun/MAXFun/public/ >
+    #Options +Indexes FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+</VirtualHost>
