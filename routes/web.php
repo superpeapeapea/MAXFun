@@ -12,5 +12,9 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('max-home');
 });
+
+//Route::controller('singer','MXSingerController');
+Route::any('/artist/search', 'MXArtistController@search');
+Route::any('/artist/similar/{artistId}', 'MXArtistController@similar');

@@ -44,6 +44,16 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($request->ajax() && $exception instanceof App\Http\Controllers\MXError)
+        {
+        
+            $res = compact('data','code','message');
+            return \Response::json(['data'=>$exception->getgetDebugData,
+                                    'code'=>$exception->getCode(),
+                                    'message'=>$exception->getMessage()
+            ]);
+        }
+        
         return parent::render($request, $exception);
     }
 
@@ -63,3 +73,4 @@ class Handler extends ExceptionHandler
         return redirect()->guest('login');
     }
 }
+
