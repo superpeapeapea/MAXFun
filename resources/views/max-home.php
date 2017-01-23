@@ -137,7 +137,6 @@ svg.icon-search{
 		<symbol id="icon-search" viewBox="0 0 100 100"><title>icon-search</title><path d="M80.65 66.78a33.55 33.55 0 0 1-47.44-47.44 33.55 33.55 0 1 1 47.44 47.44zm6.73-54.16a43.06 43.06 0 0 0-65.32 55.71L2 88.39A6.8 6.8 0 0 0 11.61 98l20.06-20.06a43.06 43.06 0 0 0 55.71-65.32z"></path></symbol>
 	</svg>
 	<section id="main" ng-controller="SpotifyArtistController">
-	{%test%}
 		<div id="search-unit" class="unit">
     		<input type="search" placeholder="Search by Artist Name" id="search-input" ng-model="searchStr" onkeydown = "if(event.keyCode == 13) document.getElementById('#search-button').click()">
     		<div type="submit" id="search-button"  class="button button-header {% isReadyToSearch() ? '' : 'diabled'%}" ng-click="searchByArtistName()">
@@ -146,10 +145,10 @@ svg.icon-search{
                 </svg>
              </div>
 		</div>
-		<div id="target-unit" class="unit" ng-if="curState=='similar'">
+		<div id="target-unit" class="unit" ng-if="curState=='similar'" ng-cloak>
 			<div class="card"  ng-include="'card.html'"  ng-cloak ng-repeat="artist in stateContext[curState].targetArtists"></div>
 		</div>
-		<div id="result-unit" class="unit">
+		<div id="result-unit" class="unit" ng-cloak>
         	<div class="card"  ng-include="'card.html'" ng-click="searchSimilarByArtistId(artist)"  ng-cloak ng-repeat="artist in stateContext[curState].artists"></div>
         	<div class="card" ng-if="loadState==loadStateConfig.loading">
         		<img src="/img/loading.gif" style="width:100%;">
