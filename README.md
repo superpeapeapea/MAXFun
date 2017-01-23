@@ -23,7 +23,7 @@ Please change queue server and cache server to corresponding service on your mac
 Then it should be all set. Just request the home page.
 
 # Review
-If you are not gonna install it. Please simply visit the [DEMO](http://junhuang.us)
+If you are not gonna install it. Please simply visit the [DEMO](http://maxfun.junhuang.us)
 
 I made all code aggregated, so it is very simple to review them together in git:
 
