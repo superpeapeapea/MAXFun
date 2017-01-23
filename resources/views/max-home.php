@@ -138,7 +138,7 @@ svg.icon-search{
 	</svg>
 	<section id="main" ng-controller="SpotifyArtistController">
 		<div id="search-unit" class="unit">
-    		<input type="search" placeholder="Search by Artist Name" id="search-input" ng-model="searchStr" onkeydown = "if(event.keyCode == 13) document.getElementById('#search-button').click()">
+    		<input type="search" placeholder="Search by Artist Name" id="search-input" ng-model="searchStr" onkeydown = "if(event.keyCode == 13) document.getElementById('search-button').click()">
     		<div type="submit" id="search-button"  class="button button-header {% isReadyToSearch() ? '' : 'diabled'%}" ng-click="searchByArtistName()">
                 <svg class="icon-search">
                   <use xlink:href="#icon-search"></use>
