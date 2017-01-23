@@ -19,6 +19,7 @@ GlobalMXApp = angular.module('maxfun', [],  function($interpolateProvider) {
     var lastApiParam = {};
     $scope.loadMoreArtists = function(apiParam){
         if($scope.loadState == $scope.loadStateConfig.ready){
+            $scope.loadState = $scope.loadStateConfig.loading;
             if(apiParam===undefined){
                 lastApiParam['params'].page = $scope.stateContext[$scope.curState].page;
                 apiParam = lastApiParam;
