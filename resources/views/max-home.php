@@ -5,6 +5,7 @@
 body{
 	background-color:#fff;	
     text-align:center;
+	    font-family: "Open Sans",Arial,sans-serif;
 }
 section#main{
 	min-width:400px;
