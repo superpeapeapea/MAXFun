@@ -69,7 +69,6 @@ svg.icon-search{
     box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
     width: 350px;
 	margin:0.5rem;
-	cursor:pointer;
 	vertical-align: top;
 	text-align:center;
 	
@@ -150,6 +149,9 @@ svg.icon-search{
 	bottom:0;
 	margin:1rem 0;
 }
+.clickable{
+	cursor:pointer;
+}
 </style>
 
 </head>
@@ -173,7 +175,7 @@ svg.icon-search{
 			</div>
 		</div>
 		<div id="result-unit" masonry class="unit"  load-images="false">
-        	<div class="card masonry-brick"  ng-include="'card.html'" ng-click="searchSimilarByArtistId(artist)"  ng-cloak ng-repeat="artist in stateContext[curState].artists"></div>
+        	<div class="card masonry-brick"  ng-include="'card.html'" ng-class="{true:'clickable'}[artist.genres.length>0]"ng-click="artist.genres.length>0 && searchSimilarByArtistId(artist)"  ng-cloak ng-repeat="artist in stateContext[curState].artists"></div>
         	<div class="card split" ng-show="loadState==loadStateConfig.loading">
         		<img src="/img/loading.gif" style="height:4rem;display:inline-block;">
         	</div>
@@ -220,7 +222,7 @@ svg.icon-search{
 					<span class="genre-tag" ng-class="{true: 'highlight', false: ''}[((curState=='similar')&&(stateContext.similar.targetGenres.indexOf(genre)>-1))]" ng-repeat="genre in artist.genres">
                     {%::genre%}
                     </span>
-                    <span class="genre-tag disabled" ng-if="!artist.genres || artist.genres.length==0">No Genres</span>
+                    <span class="genre-tag disabled" ng-if="artist.genres.length==0">No Genres</span>
 				</div>
     </script>	
     

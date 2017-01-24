@@ -95,16 +95,33 @@ class MXSportifyArtistProvider{
      * Return raw data remporarily
      */
     public function searchByName($q, $page){
-        return $this->launchSearch(['q'=>'artist:'.$q
+        $storageKey = MXKeyStorage::genKey(MXKeyStorage::SPACE_SPOTIFY_NAME_SEARCH, $q, $page);
+        $results = MXKeyStorage::get($storageKey, null);
+        
+        if($results === null){
+            $results = $this->launchSearch(['q'=>'artist:'.$q
                 , 'offset'=>$page*$this->pageLimit
-        ]);
+            ]);
+            dispatch(new MXKeyStorageJob([$storageKey=>$results]));
+        }
+        
+        return $results;
     }
     
     public function searchByGenre(array $genres, $page){
-        return $this->launchSearch(
-            ['q'=>'genre:"'.implode(' ', $genres).'"'
-            , 'offset'=>$page*$this->pageLimit
-        ]);
+        sort($genres);
+        $storageKey = MXKeyStorage::genKey(MXKeyStorage::SPACE_SPOTIFY_GENRE_SEARCH, implode(':',$genres), $page);
+        $results = MXKeyStorage::get($storageKey, null);
+        
+        if($results === null){
+            $results = $this->launchSearch(
+                            ['q'=>'genre:"'.implode(' ', $genres).'"'
+                            , 'offset'=>$page*$this->pageLimit
+                        ]);
+            dispatch(new MXKeyStorageJob([$storageKey=>$results]));
+        }
+        
+        return $results;
     }
     
     
@@ -174,6 +191,8 @@ class MXKeyStorageJob implements ShouldQueue{
  */
 class MXKeyStorage extends \Cache{
     CONST SPACE_SPOTIFY_ARTIST = 1;
+    CONST SPACE_SPOTIFY_NAME_SEARCH = 2;
+    CONST SPACE_SPOTIFY_GENRE_SEARCH = 3;
     
     CONST TIME_ONE_DAY = 1440;
     CONST TIME_ONE_WEEK = 10080;
