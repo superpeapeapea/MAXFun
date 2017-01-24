@@ -44,7 +44,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if ($request->ajax() && $exception instanceof App\Http\Controllers\MXError)
+        if ($exception instanceof App\Http\Controllers\MXError)
         {
         
             $res = compact('data','code','message');

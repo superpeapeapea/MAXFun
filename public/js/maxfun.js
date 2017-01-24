@@ -4,10 +4,10 @@
 GlobalMXApp = angular.module('maxfun', [],  function($interpolateProvider) {
     $interpolateProvider.startSymbol('{%');
     $interpolateProvider.endSymbol('%}');
-}).controller('SpotifyArtistController',['$scope', '$http', function($scope, $http){
+}).controller('SpotifyArtistController',['$scope', '$http', '$timeout', function($scope, $http, $timeout){
     $scope.stateContext = {
         'search':{'artists':[], 'page':0},
-        'similar':{'artists':[], 'targetArtists':[], 'page':0}
+        'similar':{'artists':[], 'targetArtists':[], 'targetGenres':[], 'page':0}
     };
     $scope.curState = 'search';
     $scope.loadStateConfig = {'ready':0, 'loading':1, 'bottom':2};
@@ -35,6 +35,12 @@ GlobalMXApp = angular.module('maxfun', [],  function($interpolateProvider) {
                     }else{
                         $scope.stateContext[$scope.curState].artists = $scope.stateContext[$scope.curState].artists.concat(response.data);
                         $scope.stateContext[$scope.curState].page += 1;
+                        $timeout(function(){
+                            var msnry = new Masonry( '#result-unit', {
+                                itemSelector: '.card.masonry-brick',
+                                percentPosition: true
+                            });
+                        });
                     }
 
                 }else{
@@ -60,11 +66,12 @@ GlobalMXApp = angular.module('maxfun', [],  function($interpolateProvider) {
     $scope.searchSimilarByArtistId = function(artist){
         $scope.stateContext.similar.artists = [];
         $scope.stateContext.similar.targetArtists = [artist];
+        $scope.stateContext.similar.targetGenres = artist.genres;
         $scope.changeState('similar');
         $scope.loadMoreArtists({
             'method': 'GET',
             'url': '/artist/similar/'+artist.id,
-            'page':$scope.stateContext[$scope.curState].page
+            'params':{'page':$scope.stateContext[$scope.curState].page}
         });
     };
 

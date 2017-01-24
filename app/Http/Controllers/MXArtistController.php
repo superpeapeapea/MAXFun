@@ -47,8 +47,27 @@ class MXArtistController extends Controller{
         
         $artistIns = MXSportifyArtistProvider::instance()->getUserById($artistId);
 
-        $similarArtistArr = MXSportifyArtistProvider::instance()->searchByGenre($artistIns['genres'], $par['page']);
-        
+        //Since sportify is not giving good results for multiple genre search, we will search genres one by one
+        //Frontend page is mode of genres
+        $genCount = count($artistIns['genres']);
+        if($genCount == 0){
+            $similarArtistArr = [];
+        }else{
+            $genIndex = $par['page']%$genCount;
+            $similarArtistArr = MXSportifyArtistProvider::instance()->searchByGenre([$artistIns['genres'][$genIndex]], $par['page']/$genCount);
+            
+            foreach($similarArtistArr as $key=>&$similarArtist){
+                if($similarArtist['id'] == $artistId){
+                    unset($similarArtistArr[$key]);
+                }else{
+                    //Temporary, use count()
+                    $similarArtist['isc_score'] = count(array_intersect($artistIns['genres'], $similarArtist['genres']));
+                }
+            }
+            usort($similarArtistArr, function($aa, $ab){
+                return $ab['isc_score'] - $aa['isc_score'];
+            });
+        }
         
         return $this->responseRestFul($similarArtistArr);
     }
@@ -96,10 +115,13 @@ class MXSportifyArtistProvider{
             $artistInfo = MXKeyStorage::get($artistKey, null);
         }
         
-//         if(artistInfo === null){
-//             $curlIns = new MXCurl();
-//             $artistInfo = 
-//         }
+        if($artistInfo === null){
+            $curlIns = new MXCurl();
+            $raw = $curlIns->curlForContent('https://api.spotify.com/v1/artists/'.$id);
+            $artistInfo = json_decode($raw, true);
+            
+            $this->storeArtists([$artistInfo]);
+        }
         return $artistInfo;
     }
     
