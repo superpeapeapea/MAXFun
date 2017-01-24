@@ -179,7 +179,7 @@ svg.icon-search{
         	<div class="card split" ng-show="loadState==loadStateConfig.loading">
         		<img src="/img/loading.gif" style="height:4rem;display:inline-block;">
         	</div>
-        	<div class="card split" ng-show="loadState==loadStateConfig.ready && stateContext[curState].artists.length>0" ng-click="loadMoreArtists()">
+        	<div class="card split clickable" ng-show="loadState==loadStateConfig.ready && stateContext[curState].artists.length>0" ng-click="loadMoreArtists()">
         		<span class="tip">Load More</span>
         	</div>
         	<div class="card split" style="width:100%;margin:0;" ng-show="loadState==loadStateConfig.bottom && stateContext[curState].artists.length==0">
